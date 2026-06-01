@@ -2,12 +2,18 @@ package com.abhi.skillloopai.controller;
 
 import java.util.List;
 
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.abhi.skillloopai.dto.PdfVivaStartResponse;
 import com.abhi.skillloopai.dto.PerformanceSummaryDTO;
 import com.abhi.skillloopai.dto.VivaAnswerRequest;
 import com.abhi.skillloopai.entity.VivaResult;
 import com.abhi.skillloopai.service.VivaService;
-
-import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/viva")
@@ -21,7 +27,7 @@ public class VivaController {
 
     @PostMapping("/evaluate")
     public VivaResult evaluateAnswer(
-            @RequestBody VivaAnswerRequest request) {
+            @jakarta.validation.Valid @RequestBody VivaAnswerRequest request) {
 
         return vivaService.evaluate(request);
     }
@@ -29,6 +35,13 @@ public class VivaController {
     @GetMapping("/history")
     public List<VivaResult> getHistory() {
         return vivaService.getAllResults();
+    }
+
+    @GetMapping("/start/{pdfId}")
+    public PdfVivaStartResponse startPdfViva(
+            @PathVariable Long pdfId) {
+
+        return vivaService.startPdfViva(pdfId);
     }
 
     @GetMapping("/analytics")

@@ -1,11 +1,17 @@
 package com.abhi.skillloopai.controller;
 
 import java.util.List;
-import com.abhi.skillloopai.entity.StudySession;
-import com.abhi.skillloopai.dto.TopicRequest;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.abhi.skillloopai.dto.StudyGuideResponse;
+import com.abhi.skillloopai.dto.TopicRequest;
+import com.abhi.skillloopai.entity.StudySession;
 import com.abhi.skillloopai.service.StudyService;
-import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/study")
@@ -17,15 +23,15 @@ public class StudyController {
         this.studyService = studyService;
     }
 
-    @PostMapping("/generate")
-    public StudyGuideResponse generateQuestions(
-            @RequestBody TopicRequest request) {
+        @PostMapping("/generate")
+        public StudyGuideResponse generateQuestions(
+            @jakarta.validation.Valid @RequestBody TopicRequest request) {
 
         return studyService.generateStudyContent(
-                request.getTopic(),
-                request.getDifficulty()
+            request.getTopic(),
+            request.getDifficulty()
         );
-    }
+        }
     @GetMapping("/history")
     public List<StudySession> getHistory() {
         return studyService.getStudyHistory();

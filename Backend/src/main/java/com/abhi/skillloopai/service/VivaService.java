@@ -3,8 +3,10 @@ package com.abhi.skillloopai.service;
 import java.util.List;
 
 import com.abhi.skillloopai.dto.PerformanceSummaryDTO;
+import com.abhi.skillloopai.dto.PdfVivaStartResponse;
 import com.abhi.skillloopai.dto.VivaAnswerRequest;
 import com.abhi.skillloopai.entity.VivaResult;
+import com.abhi.skillloopai.repository.PdfQuestionRepository;
 import com.abhi.skillloopai.repository.VivaResultRepository;
 import org.springframework.stereotype.Service;
 
@@ -12,13 +14,27 @@ import org.springframework.stereotype.Service;
 public class VivaService {
 
     private final VivaResultRepository repository;
+    private final PdfQuestionRepository pdfQuestionRepository;
 
-    public VivaService(VivaResultRepository repository) {
+    public VivaService(
+            VivaResultRepository repository,
+            PdfQuestionRepository pdfQuestionRepository) {
+
         this.repository = repository;
+        this.pdfQuestionRepository = pdfQuestionRepository;
     }
 
     public List<VivaResult> getAllResults() {
         return repository.findAll();
+    }
+
+    public PdfVivaStartResponse startPdfViva(
+            Long pdfId) {
+
+        return new PdfVivaStartResponse(
+                pdfId,
+                pdfQuestionRepository.findByPdfId(pdfId)
+        );
     }
 
     public VivaResult evaluate(VivaAnswerRequest request) {

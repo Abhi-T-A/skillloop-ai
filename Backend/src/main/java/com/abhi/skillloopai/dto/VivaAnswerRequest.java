@@ -1,35 +1,19 @@
 package com.abhi.skillloopai.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+import lombok.Data;
+
+@Data
 public class VivaAnswerRequest {
 
+    @NotBlank(message = "Topic is required")
     private String topic;
+
+    @NotBlank(message = "Question is required")
     private String question;
+
+    @NotBlank(message = "Answer is required")
+    @Size(min = 3, message = "Answer must be at least 3 characters")
     private String userAnswer;
-
-    public VivaAnswerRequest() {
-    }
-
-    public String getTopic() {
-        return topic;
-    }
-
-    public void setTopic(String topic) {
-        this.topic = topic;
-    }
-
-    public String getQuestion() {
-        return question;
-    }
-
-    public void setQuestion(String question) {
-        this.question = question;
-    }
-
-    public String getUserAnswer() {
-        return userAnswer;
-    }
-
-    public void setUserAnswer(String userAnswer) {
-        this.userAnswer = userAnswer;
-    }
 }
