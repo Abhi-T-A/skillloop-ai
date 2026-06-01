@@ -15,8 +15,11 @@ import com.abhi.skillloopai.dto.VivaAnswerRequest;
 import com.abhi.skillloopai.entity.VivaResult;
 import com.abhi.skillloopai.service.VivaService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("/api/viva")
+@Tag(name = "Viva", description = "Viva APIs")
 public class VivaController {
 
     private final VivaService vivaService;

@@ -13,8 +13,11 @@ import com.abhi.skillloopai.dto.TopicRequest;
 import com.abhi.skillloopai.entity.StudySession;
 import com.abhi.skillloopai.service.StudyService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("/api/study")
+@Tag(name = "Study", description = "Study session APIs")
 public class StudyController {
 
     private final StudyService studyService;
