@@ -49,7 +49,7 @@ public class PdfService {
 
         User user = getCurrentUser();
 
-        PdfStudySession pdf = repository.findByIdAndUser(pdfId, user)
+        repository.findByIdAndUser(pdfId, user)
                 .orElseThrow(() -> new ResourceNotFoundException("PDF not found"));
 
         List<QuestionAnswerDTO> questions = List.of(
@@ -79,25 +79,21 @@ public class PdfService {
     public PdfStudySession uploadPdf(
             MultipartFile file) throws IOException {
 
-        PDDocument document =
-                PDDocument.load(file.getInputStream());
+        try (PDDocument document = PDDocument.load(file.getInputStream())) {
 
-        PDFTextStripper stripper =
-                new PDFTextStripper();
+            PDFTextStripper stripper = new PDFTextStripper();
 
-        String extractedText =
-                stripper.getText(document);
+            String extractedText = stripper.getText(document);
 
-        document.close();
+            PdfStudySession session = new PdfStudySession(
+                    file.getOriginalFilename(),
+                    extractedText
+            );
 
-        PdfStudySession session = new PdfStudySession(
-                file.getOriginalFilename(),
-                extractedText
-        );
+            session.setUser(getCurrentUser());
 
-        session.setUser(getCurrentUser());
-
-        return repository.save(session);
+            return repository.save(session);
+        }
     }
 
     private User getCurrentUser() {
